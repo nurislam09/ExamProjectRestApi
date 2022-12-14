@@ -4,7 +4,9 @@ import com.example.examprojectrestapi.converter.student.StudentConverterRequest;
 import com.example.examprojectrestapi.converter.student.StudentConverterResponse;
 import com.example.examprojectrestapi.dto.request.StudentRequest;
 import com.example.examprojectrestapi.dto.response.StudentResponse;
+import com.example.examprojectrestapi.model.Course;
 import com.example.examprojectrestapi.model.Group;
+import com.example.examprojectrestapi.model.Instructor;
 import com.example.examprojectrestapi.model.Student;
 import com.example.examprojectrestapi.repository.GroupRepository;
 import com.example.examprojectrestapi.repository.StudentRepository;
@@ -60,7 +62,33 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentResponse deleteStudent(Long studentId) {
         Student student = studentRepository.findById(studentId).get();
+        for (Course c : student.getGroup().getCourses()) {
+            c.getCompany().minus();
+        }
+        for (Course c : student.getGroup().getCourses()) {
+            for (Instructor i : c.getInstructors()) {
+                i.minus();
+            }
+        }
         studentRepository.delete(student);
+        return studentConverterResponse.create(student);
+    }
+
+    @Override
+    public StudentResponse assignStudent(Long studentId, Long groupId) throws IOException {
+        Student student = studentRepository.findById(studentId).get();
+        Group group = groupRepository.findById(groupId).get();
+        if (group.getStudents() != null) {
+            for (Student s : group.getStudents()) {
+                if (s.getId() == studentId) {
+                    throw new IOException("This student already exists!");
+                }
+            }
+        }
+        student.setGroup(group);
+        group.addStudent(student);
+        studentRepository.save(student);
+        groupRepository.save(group);
         return studentConverterResponse.create(student);
     }
 }

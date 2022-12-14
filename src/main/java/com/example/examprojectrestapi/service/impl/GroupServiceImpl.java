@@ -64,34 +64,34 @@ public class GroupServiceImpl implements GroupService {
     public GroupResponse deleteGroup(Long courseId, Long groupId) {
         Course course = courseRepository.findById(courseId).get();
         Group group = groupRepository.findById(groupId).get();
-//        for (Course c : group.getCourses()) {
-//            c.getCompany().minus();
-//        }
-//        for (Course c : group.getCourses()) {
-//            for (Instructor i : c.getInstructors()) {
-//                i.minus();
-//            }
-//        }
-       // group.remove(course);
+        for (Course c : group.getCourses()) {
+            c.getCompany().minus();
+        }
+        for (Course c : group.getCourses()) {
+            for (Instructor i : c.getInstructors()) {
+                i.minus();
+            }
+        }
         groupRepository.delete(group);
         return groupConverterResponse.create(group);
     }
-//
-//    @Override
-//    public GroupResponse assignGroup(Long courseId, Long id) throws IOException {
-//        Group group = groupRepository.findById(id).get();
-//        Course course = courseRepository.findById(courseId).get();
-//        if (course.getGroups() != null) {
-//            for (Group g : course.getGroups()) {
-//                if (g.getId() == id) {
-//                    throw new IOException("This group already exists!");
-//                }
-//            }
-//        }
-//        group.addCourse(course);
-//        course.addGroup(group);
-//        courseRepository.save(course);
-//        groupRepository.save(group);
-//        return groupConverterResponse.create(group);
-//    }
+
+    @Override
+    public GroupResponse assignGroup(Long courseId, Long groupId) throws IOException {
+        Group group = groupRepository.findById(groupId).get();
+        Course course = courseRepository.findById(courseId).get();
+        if (course.getGroups() != null) {
+            for (Group g : course.getGroups()) {
+                if (g.getId() == groupId) {
+                    throw new IOException("This group already exists!");
+                }
+            }
+        }
+        group.addCourse(course);
+        course.addGroup(group);
+        courseRepository.save(course);
+        groupRepository.save(group);
+        return groupConverterResponse.create(group);
+    }
+
 }

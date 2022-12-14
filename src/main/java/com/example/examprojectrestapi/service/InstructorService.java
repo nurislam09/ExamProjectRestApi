@@ -15,5 +15,5 @@ public interface InstructorService {
     InstructorResponse saveInstructor(Long groupId, InstructorRequest instructorRequest) throws IOException;
     InstructorResponse updateInstructor(Long instructorId, InstructorRequest instructorRequest) throws IOException;
     InstructorResponse deleteInstructor(Long instructorId);
-    //void assignInstructor(Long id, Long courseId) throws IOException;
+    InstructorResponse assignInstructor(Long instructorId, Long courseId) throws IOException;
 }

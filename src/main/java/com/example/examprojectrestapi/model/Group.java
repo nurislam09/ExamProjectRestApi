@@ -56,8 +56,8 @@ public class Group {
         students.add(student);
     }
 
-    public void remove(Course course){
-        this.courses.remove(course);
-        course.getGroups().remove(this);
-    }
+//    public void remove(Course course){
+//        this.courses.remove(course);
+//        course.getGroups().remove(this);
+//    }
 }

@@ -45,6 +45,11 @@ public class InstructorServiceImpl implements InstructorService {
     public InstructorResponse saveInstructor(Long courseId, InstructorRequest instructorRequest) throws IOException {
         Course course = courseRepository.findById(courseId).get();
         Instructor instructor = instructorConverterRequest.create(instructorRequest);
+        for (Group g : course.getGroups()) {
+            if (g.getStudents().size() != 0) {
+                instructor.setStudent(g.getStudents().size());
+            }
+        }
         course.addInstructor(instructor);
         instructor.setCourse(course);
         instructorRepository.save(instructor);
@@ -62,6 +67,24 @@ public class InstructorServiceImpl implements InstructorService {
     public InstructorResponse deleteInstructor(Long instructorId) {
         Instructor instructor = instructorRepository.findById(instructorId).get();
         instructorRepository.delete(instructor);
+        return instructorConverterResponse.create(instructor);
+    }
+
+    @Override
+    public InstructorResponse assignInstructor(Long instructorId, Long courseId) throws IOException {
+        Instructor instructor = instructorRepository.findById(instructorId).get();
+        Course course = courseRepository.findById(courseId).get();
+        if (course.getInstructors() != null) {
+            for (Instructor i : course.getInstructors()) {
+                if (i.getId() == instructorId) {
+                    throw new IOException("This instructor already exists!");
+                }
+            }
+        }
+        instructor.setCourse(course);
+        course.addInstructor(instructor);
+        courseRepository.save(course);
+        instructorRepository.save(instructor);
         return instructorConverterResponse.create(instructor);
     }
 }

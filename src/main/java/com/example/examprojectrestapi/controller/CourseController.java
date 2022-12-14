@@ -2,7 +2,11 @@ package com.example.examprojectrestapi.controller;
 
 import com.example.examprojectrestapi.dto.request.CourseRequest;
 import com.example.examprojectrestapi.dto.response.CourseResponse;
+import com.example.examprojectrestapi.dto.response.GroupResponse;
+import com.example.examprojectrestapi.dto.response.InstructorResponse;
 import com.example.examprojectrestapi.service.CourseService;
+import com.example.examprojectrestapi.service.GroupService;
+import com.example.examprojectrestapi.service.InstructorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +19,8 @@ import java.util.List;
 public class CourseController {
 
     private final CourseService courseService;
+    private final GroupService groupService;
+    private final InstructorService instructorService;
 
     @GetMapping("/getAllCourse")
     public List<CourseResponse> getAllCourse (){
@@ -46,4 +52,15 @@ public class CourseController {
         return courseService.deleteCourse(courseId);
     }
 
+    @PostMapping("/assignGroupToCourse/{courseId}/{groupId}")
+    private GroupResponse assignGroupToCourse(@PathVariable Long courseId,
+                                              @PathVariable Long groupId) throws IOException {
+        return groupService.assignGroup(courseId, groupId);
+    }
+
+    @PostMapping("/assignInstructor/{instructorId}/{courseId}")
+    private InstructorResponse assignInstructorToCourse(@PathVariable Long instructorId,
+                                                        @PathVariable Long courseId) throws IOException {
+        return instructorService.assignInstructor(instructorId, courseId);
+    }
 }

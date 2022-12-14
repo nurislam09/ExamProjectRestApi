@@ -21,5 +21,5 @@ public interface GroupService {
 
      GroupResponse deleteGroup(Long courseId,Long groupId);
 
-   // GroupResponse assignGroup(Long courseId, Long groupId) throws IOException;
+    GroupResponse assignGroup(Long courseId, Long groupId) throws IOException;
 }

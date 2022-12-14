@@ -3,10 +3,13 @@ package com.example.examprojectrestapi.controller;
 
 import com.example.examprojectrestapi.dto.request.GroupRequest;
 import com.example.examprojectrestapi.dto.response.GroupResponse;
+import com.example.examprojectrestapi.dto.response.StudentResponse;
 import com.example.examprojectrestapi.service.GroupService;
+import com.example.examprojectrestapi.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -15,7 +18,7 @@ import java.util.List;
 public class GroupController {
 
     private final GroupService groupService;
-  //  private final StudentService studentService;
+    private final StudentService studentService;
 
     @GetMapping("/getAllGroup")
     public List<GroupResponse> getAllGroup() {
@@ -46,10 +49,9 @@ public class GroupController {
     public GroupResponse deleteGroup(@PathVariable Long courseId, @PathVariable Long groupId) {
         return groupService.deleteGroup(courseId, groupId);
     }
-//
-//    @PostMapping("/assignStudent/{id}/{groupId}")
-//    private StudentResponse assignStudent(@PathVariable Long id,
-//                                          @PathVariable Long groupId) throws IOException {
-//        return studentService.assignStudent(id, groupId);
-//    }
+    @PostMapping("/assignStudent/{studentId}/{groupId}")
+    private StudentResponse assignStudent(@PathVariable Long studentId,
+                                          @PathVariable Long groupId) throws IOException {
+        return studentService.assignStudent(studentId, groupId);
+    }
 }

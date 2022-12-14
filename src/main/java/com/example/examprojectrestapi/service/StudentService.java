@@ -21,5 +21,6 @@ public interface StudentService {
 
     StudentResponse deleteStudent(Long studentId);
 
-   // StudentResponse assignStudent(Long courseId, Long studentId) throws IOException;
+    StudentResponse assignStudent(Long studentId, Long groupId) throws IOException;
+
 }

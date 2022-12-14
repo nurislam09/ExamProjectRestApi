@@ -31,8 +31,8 @@ public class Company {
     @OneToMany(cascade = {ALL},fetch = LAZY,mappedBy = "company")
     private List<Course> courses;
 
-//    @Column
-//    private int countOfStudent=0;
+    @Column
+    private int countOfStudent=0;
 
     public Company(String companyName, String locatedCountry) {
         this.companyName = companyName;
@@ -43,11 +43,11 @@ public class Company {
         if (course == null) courses = new ArrayList<>();
         courses.add(course);
     }
-//    public void plus(){
-//        countOfStudent++;
-//    }
-//    public void minus(){
-//        countOfStudent--;
-//    }
+    public void plus(){
+        countOfStudent++;
+    }
+    public void minus(){
+        countOfStudent--;
+    }
 
 }

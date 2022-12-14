@@ -46,4 +46,5 @@ public class LessonController {
     public LessonResponse deleteLesson(@PathVariable Long lessonId) {
         return lessonService.deleteLesson(lessonId);
     }
+
 }
